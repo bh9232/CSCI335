@@ -1,4 +1,4 @@
-// <Your name>
+// Brian Hong 
 // Main file for Part2(b) of Homework 2.
 // Code will compile and run after you have completed sequence_map.h.
 
@@ -23,8 +23,7 @@ void TestTree(const string &db_filename, const string &seq_filename, TreeType &a
 
 }  // namespace
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
   if (argc != 4) {
     cout << "Usage: " << argv[0] << " <databasefilename> <queryfilename> <tree-type>" << endl;
     return 0;

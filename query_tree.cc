@@ -1,4 +1,4 @@
-// <Your name>
+// Brian Hong
 // Main file for Part2(a) of Homework 2.
 // Code will compile and run after you have completed sequence_map.h.
 
@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <fstream>
 using namespace std;
 
 namespace {
@@ -22,12 +24,28 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
   // Parse input file @db_filename and feel tree @a_tree
   // Then prompt the user for exactly three strings (do a loop) and
   // provide the results of find() as described in the assignment.
+
+
+  ifstream input_file(db_filename);
+  if(!input_file.good()){
+    cerr << "input not good\n";
+  }
+
+  Tree<SequenceMap> a_tree;
+  string db_line;
+  while(getline(cin, db_line)){
+    string an_enz_acro = getline(cin, db_line);
+    string a_rec_seq;
+    while()){
+      
+    }
+  }
+  input_file.close();
 }
 
 }  // namespace
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
   if (argc != 3) {
     cout << "Usage: " << argv[0] << " <databasefilename> <tree-type>" << endl;
     return 0;

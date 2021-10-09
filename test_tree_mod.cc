@@ -1,4 +1,4 @@
-// <Your name>
+// Brian Hong
 // Main file for Part2(c) of Homework 2.
 // Code will compile and run after you have completed sequence_map.h.
 

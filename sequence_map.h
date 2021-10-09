@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <avl_tree.h>
+#include <bst_tree.h>
 
 class SequenceMap{
     public:
