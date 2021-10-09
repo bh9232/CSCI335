@@ -1,19 +1,30 @@
+/*
+    Name: Brian Hong
+
+    Header file for sequence_map.cc
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
 
 class SequenceMap{
-public:
-    //constructor
-    SequenceMap(const std::string &rec_seq, const std::string &enz_acro);
+    public:
+        
     //defualt big-five
+    SequenceMap() = default;
     SequenceMap(const SequenceMap &rhs) = default;
-    SequenceMap &operator=(const SequenceMap &rhs) = default;
+    SequenceMap& operator=(const SequenceMap &rhs) = default;
     SequenceMap(SequenceMap &&rhs) = default;
-    SequenceMap &operator=(SequenceMap &&rhs) = default;
+    SequenceMap& operator=(SequenceMap &&rhs) = default;
     ~SequenceMap() = default;
-    
-private:
+    //additional functions
+    SequenceMap(const std::string &a_rec_seq, const std::string &an_enz_acro);
+    bool operator<(const SequenceMap &rhs) const;
+    friend ostream& operator<<(ostream &out, const SequenceMap &another_map);
+    void Merge(const SequenceMap &other_sequence);
+        
+    private:
     std::string recognition_sequence_;
     std::vector<std::string> enzyme_acronyms_;
-}
+};
