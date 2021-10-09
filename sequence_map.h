@@ -25,7 +25,10 @@ class SequenceMap{
     bool operator<(const SequenceMap &rhs) const;
     friend ostream& operator<<(ostream &out, const SequenceMap &another_map);
     void Merge(const SequenceMap &other_sequence);
-        
+    bool isEmpty() const;
+    std::string getSequence() const;
+    std::vector<std::string> getAcronym() const; 
+    
     private:
     std::string recognition_sequence_;
     std::vector<std::string> enzyme_acronyms_;

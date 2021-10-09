@@ -30,3 +30,15 @@ void SequenceMap::Merge(const SequenceMap &other_sequence){
         }
     }
 }
+
+bool isEmpty() const{
+    return recognition_sequence_.empty();
+}
+
+std::string getSequence() const{
+    return recognition_sequence_;
+}
+
+std::vector<std::string> getAcronym() const{
+    return enzyme_acronyms_;
+}
