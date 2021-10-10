@@ -31,7 +31,7 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
   }
 
   string db_line, skip_lines;
-  for(int i = 0; i < 1-; i++){ //skipping first 10 lines of rebase210.txt
+  for(int i = 0; i < 10; i++){ //skipping first 10 lines of rebase210.txt
     getline(in_stream, skip_lines);
   }
 
