@@ -13,3 +13,11 @@ By typing
 make clean
 
 You delete all .o files and executables.
+
+---------------------------------------- What I Did ----------------------------------------
+- coded sequence_map.h
+- coded query_tree.cc
+
+------------------------------------------ Imcomplete/Bugs ---------------------------------
+- 2a still not working, wrong enzyme printing
+- have not touched 2b, 2c

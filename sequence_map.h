@@ -30,15 +30,18 @@ class SequenceMap{
         return recognition_sequence_ < rhs.recognition_sequence_;
     }
 
-    friend ostream& operator<<(ostream &out, const SequenceMap &another_map){
-        out << another_map.recognition_sequence_ << "\n";
-        if(another_map.enzyme_acronyms_.size() == 0){
-            cout << "Not Found";
-        }else{
-            for(size_t i = 0; i < another_map.enzyme_acronyms_.size(); i++){
-                cout << another_map.enzyme_acronyms_[i] << " ";
+    friend ostream& operator<<(ostream &out, const SequenceMap &another_map){        
+        // if(another_map.enzyme_acronyms_.size() == 0){
+        //     cout << "Not Found";
+        // }else{
+        //     for(size_t i = 0; i < another_map.enzyme_acronyms_.size(); i++){
+        //         cout << another_map.enzyme_acronyms_[i] << "\n";
+        //     }
+        // }
+
+        for(size_t i = 0; i < another_map.enzyme_acronyms_.size(); i++){
+                cout << another_map.enzyme_acronyms_[i] << "\n";
             }
-        }
         return out;
     }
 

@@ -41,11 +41,13 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
     string a_reco_seq;
     while(getline(cin, a_reco_seq)){
       SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
-      cout << new_sequence_map;
+      if(a_tree.contains(new_sequence_map)){
+        cout << a_tree.find(new_sequence_map.getSequence());
+      }
       a_tree.insert(new_sequence_map);
     }
   }
-
+  
   in_stream.close();
   
 }
