@@ -31,15 +31,15 @@ class SequenceMap{
     }
 
     friend ostream& operator<<(ostream &out, const SequenceMap &another_map){
-    if(another_map.enzyme_acronyms_.size() == 0){
-        out << "Not Found";
+        out << another_map.recognition_sequence_ << "\n";
+        if(another_map.enzyme_acronyms_.size() == 0){
+            out << "Not Found";
         }else{
             for(size_t i = 0; i < another_map.enzyme_acronyms_.size(); i++){
-                out << another_map.recognition_sequence_[i] << " ";
+                out << another_map.enzyme_acronyms_[i] << " ";
             }
         }
-        out << "\n";
-        return out;
+        cout << "\n";
     }
 
     void Merge(const SequenceMap &other_sequence){

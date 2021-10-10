@@ -25,13 +25,16 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
 
   string db_line;
   while(getline(cin, db_line)){
-    string an_enz_acro = db_line.substr(0,db_line.find("/"));
-    string a_reco_seq;
-    while(getline(cin, a_reco_seq)){
-      SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
-      a_tree.insert(new_sequence_map);
-    }
+    cout << db_line << "\n";
+    // string an_enz_acro = db_line.substr(0,db_line.find("/"));
+    // string a_reco_seq;
+    // while(getline(cin, a_reco_seq)){
+    //   SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
+    //   cout << new_sequence_map;
+    //   a_tree.insert(new_sequence_map);
+    // }
   }
+  
 }
 
 }  // namespace
