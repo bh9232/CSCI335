@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 namespace {
@@ -23,17 +24,29 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
   // Then prompt the user for exactly three strings (do a loop) and
   // provide the results of find() as described in the assignment.
 
-  string db_line;
-  while(getline(cin, db_line)){
-    cout << db_line << "\n";
-    // string an_enz_acro = db_line.substr(0,db_line.find("/"));
-    // string a_reco_seq;
-    // while(getline(cin, a_reco_seq)){
-    //   SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
-    //   cout << new_sequence_map;
-    //   a_tree.insert(new_sequence_map);
-    // }
+  ifstream in_stream(db_filename);
+  if(in_stream.fail()){
+    cerr << "error in stream\n";
+    exit(1);
   }
+
+  string db_line, skip_lines;
+  for(int i = 0; i < 1-; i++){ //skipping first 10 lines of rebase210.txt
+    getline(in_stream, skip_lines);
+  }
+
+  vector<string> enzyme_acro;
+  while(getline(in_stream, db_line, '/')){
+    string an_enz_acro = db_line.substr(0,db_line.find("/"));
+    string a_reco_seq;
+    while(getline(cin, a_reco_seq)){
+      SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
+      cout << new_sequence_map;
+      a_tree.insert(new_sequence_map);
+    }
+  }
+
+  in_stream.close();
   
 }
 
