@@ -8,8 +8,6 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
-#include <fstream>
 using namespace std;
 
 namespace {
@@ -25,22 +23,15 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
   // Then prompt the user for exactly three strings (do a loop) and
   // provide the results of find() as described in the assignment.
 
-
-  ifstream input_file(db_filename);
-  if(!input_file.good()){
-    cerr << "input not good\n";
-  }
-
-  Tree<SequenceMap> a_tree;
   string db_line;
   while(getline(cin, db_line)){
-    string an_enz_acro = getline(cin, db_line);
-    string a_rec_seq;
-    while()){
-      
+    string an_enz_acro = db_line.substr(0,db_line.find("/"));
+    string a_reco_seq;
+    while(getline(cin, a_reco_seq)){
+      SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
+      a_tree.insert(new_sequence_map);
     }
   }
-  input_file.close();
 }
 
 }  // namespace
