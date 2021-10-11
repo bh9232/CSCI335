@@ -9,10 +9,17 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
 using namespace std;
 
 namespace {
 
+string getSeq(string &line){
+  size_t pos = line.find('/');
+  string seq = line.substr(0, pos);
+  line = line.substr(pos+1);
+  return seq;
+}
 
 // @db_filename: an input filename.
 // @a_tree: an input tree of the type TreeType. It is assumed to be
@@ -30,26 +37,40 @@ void QueryTree(const string &db_filename, TreeType &a_tree) {
     exit(1);
   }
 
-  string db_line, skip_lines;
-  for(int i = 0; i < 10; i++){ //skipping first 10 lines of rebase210.txt
-    getline(in_stream, skip_lines);
-  }
 
-  vector<string> enzyme_acro;
-  while(getline(in_stream, db_line, '/')){
-    string an_enz_acro = db_line.substr(0,db_line.find("/"));
-    string a_reco_seq;
-    while(getline(cin, a_reco_seq)){
+  string db_line, an_enz_acro, a_reco_seq;
+  for(unsigned i = 0; i < 10; i++){ //skipping first 10 lines of rebase210.txt
+    getline(in_stream, db_line);
+  }
+  
+  while(getline(in_stream, db_line)){
+    if(db_line.empty()){
+      continue;
+    }
+
+    //getting acros
+    an_enz_acro = getSeq(db_line);
+    
+    //getting seqs
+    while(db_line.length() > 2){
+      a_reco_seq = getSeq(db_line);
       SequenceMap new_sequence_map(a_reco_seq, an_enz_acro);
-      if(a_tree.contains(new_sequence_map)){
-        cout << a_tree.find(new_sequence_map.getSequence());
-      }
       a_tree.insert(new_sequence_map);
     }
   }
-  
   in_stream.close();
   
+  vector<string> user_input;
+  int counter = 0;
+  while(counter < 3){
+    cin >> a_reco_seq;
+    user_input.push_back(a_reco_seq);
+    counter++;
+  }
+
+  for (int i = 0; i < counter; i++){
+    a_tree.printEnzyme(user_input[i]);
+  }
 }
 
 }  // namespace

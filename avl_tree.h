@@ -114,6 +114,9 @@ class AvlTree
             printTree( root );
     }
 
+    void printEnzyme(const string &x){
+        printEnzyme(x, root);
+    }
     /**
      * Make the tree logically empty.
      */
@@ -146,6 +149,7 @@ class AvlTree
         remove( x, root );
     }
 
+
   private:
     struct AvlNode
     {
@@ -162,7 +166,7 @@ class AvlTree
     };
 
     AvlNode *root;
-
+    int arbit_counter = 0;
 
     /**
      * Internal method to insert into a subtree.
@@ -178,7 +182,9 @@ class AvlTree
             insert( x, t->left );
         else if( t->element < x )
             insert( x, t->right );
-        
+        else{
+            t->element.Merge(x);
+        }
         balance( t );
     }
 
@@ -333,6 +339,18 @@ class AvlTree
             printTree( t->left );
             cout << t->element << endl;
             printTree( t->right );
+        }
+    }
+
+    void printEnzyme(const string &x, AvlNode *t) const{
+        if(t == nullptr){
+            cout << "Not Found\n";
+        }else if(x < t->element.getRecSeq()){
+            printEnzyme(x, t->left);
+        }else if(x > t->element.getRecSeq()){
+            printEnzyme(x, t->right);
+        }else{
+            t->element.getEnzAcro();
         }
     }
 

@@ -123,6 +123,10 @@ class BinarySearchTree
             printTree( root, out );
     }
 
+    void printEnzyme(const string &x){
+        printEnzyme(x, root);
+    }
+
     /**
      * Make the tree logically empty.
      */
@@ -317,6 +321,18 @@ class BinarySearchTree
             printTree( t->left, out );
             out << t->element << endl;
             printTree( t->right, out );
+        }
+    }
+
+    void printEnzyme(const string &x, BinaryNode *t) const{
+        if(t == nullptr){
+            cout << "Not Found\n";
+        }else if(x < t->element.getRecSeq()){
+            printEnzyme(x, t->left);
+        }else if(x > t->element.getRecSeq()){
+            printEnzyme(x, t->right);
+        }else{
+            t->element.getEnzAcro();
         }
     }
 

@@ -31,36 +31,27 @@ class SequenceMap{
     }
 
     friend ostream& operator<<(ostream &out, const SequenceMap &another_map){        
-        // if(another_map.enzyme_acronyms_.size() == 0){
-        //     cout << "Not Found";
-        // }else{
-        //     for(size_t i = 0; i < another_map.enzyme_acronyms_.size(); i++){
-        //         cout << another_map.enzyme_acronyms_[i] << "\n";
-        //     }
-        // }
-
-        for(size_t i = 0; i < another_map.enzyme_acronyms_.size(); i++){
-                cout << another_map.enzyme_acronyms_[i] << "\n";
-            }
+        for(unsigned i = 0; i < another_map.enzyme_acronyms_.size(); i++){
+            out << another_map.enzyme_acronyms_[i] << " ";
+        }
         return out;
     }
 
     void Merge(const SequenceMap &other_sequence){
-        for(size_t i = 0; i < other_sequence.enzyme_acronyms_.size(); ++i){
+        for(unsigned i = 0; i < other_sequence.enzyme_acronyms_.size(); i++){
             enzyme_acronyms_.push_back(other_sequence.enzyme_acronyms_[i]);
         }
     }
 
-    bool isEmpty() const{
-        return recognition_sequence_.empty();
-    }
-
-    std::string getSequence() const{
+    std::string getRecSeq(){
         return recognition_sequence_;
     }
 
-    std::vector<std::string> getAcronym() const{
-        return enzyme_acronyms_;
+    void getEnzAcro(){
+        for(unsigned i = 0; i < enzyme_acronyms_.size(); i++){
+            cout << enzyme_acronyms_[i] << " ";
+        }
+        cout << endl;
     }
 
     private:
