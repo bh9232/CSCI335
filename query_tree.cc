@@ -15,7 +15,7 @@ using namespace std;
 namespace {
 
 string getSeq(string &line){
-  size_t pos = line.find('/');
+  int pos = line.find('/');
   string seq = line.substr(0, pos);
   line = line.substr(pos+1);
   return seq;

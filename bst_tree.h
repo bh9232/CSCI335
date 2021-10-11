@@ -103,6 +103,10 @@ class BinarySearchTree
         return contains( x, root );
     }
 
+    bool contains(const Comparable &x, int &counter) const{
+        return contains(x, root, counter);
+    }
+
     /**
      * Test if the tree is logically empty.
      * Return true if empty, false otherwise.
@@ -125,6 +129,14 @@ class BinarySearchTree
 
     void printEnzyme(const string &x){
         printEnzyme(x, root);
+    }
+
+    int numNodes(){
+        return numNodes(root);
+    }
+
+    float avgDepth(){
+        return totalDepth(root, 0.0) / numNodes();
     }
 
     /**
@@ -159,6 +171,9 @@ class BinarySearchTree
         remove( x, root );
     }
 
+    void remove(const Comparable &x, int &counter, int &min_counter){
+        remove(x, root, counter, min_counter);
+    }
 
   private:
     struct BinaryNode
@@ -240,6 +255,27 @@ class BinarySearchTree
         }
     }
 
+    void remove( const Comparable &x, BinaryNode *t, int counter, int min_counter){
+        if( t == nullptr )
+            return;   // Item not found; do nothing
+        
+        if( x < t->element )
+            remove( x, t->left, ++counter, min_counter);
+        else if( t->element < x )
+            remove( x, t->right, ++counter, min_counter );
+        else if( t->left != nullptr && t->right != nullptr ) // Two children
+        {
+            t->element = findMin( t->right )->element;
+            remove( t->element, t->right, ++counter, min_counter);
+        }
+        else
+        {
+            BinaryNode *oldNode = t;
+            t = ( t->left != nullptr ) ? t->left : t->right;
+            delete oldNode;
+        }
+    }
+
     /**
      * Internal method to find the smallest item in a subtree t.
      * Return node containing the smallest item.
@@ -282,6 +318,19 @@ class BinarySearchTree
         else
             return true;    // Match
     }
+
+    bool contains( const Comparable & x, BinaryNode *t, int &counter) const
+    {
+        if( t == nullptr )
+            return false;
+        else if( x < t->element )
+            return contains( x, t->left, ++counter);
+        else if( t->element < x )
+            return contains( x, t->right, ++counter);
+        else
+            return true;    // Match
+    }
+
 /****** NONRECURSIVE VERSION*************************
     bool contains( const Comparable & x, BinaryNode *t ) const
     {
@@ -334,6 +383,22 @@ class BinarySearchTree
         }else{
             t->element.getEnzAcro();
         }
+    }
+
+    //print number of nodes
+    int numNodes(BinaryNode *t){
+        if(t == nullptr){
+            return 0;
+        }
+        return 1 + numNodes(t->left) + numNodes(t->right);
+    }
+
+    //returns total depth
+    float totalDepth(BinaryNode *t, float depth){
+        if(t == nullptr){
+            return 0;
+        }
+        return depth + totalDepth(t->left, depth+1) + totalDepth(t->right, depth+1);
     }
 
     /**

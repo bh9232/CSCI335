@@ -89,9 +89,13 @@ class AvlTree
     /**
      * Returns true if x is found in the tree.
      */
-    bool contains( const Comparable & x ) const
-    {
-        return contains( x, root );
+    // bool contains( const Comparable & x ) const
+    // {
+    //     return contains( x, root );
+    // }
+
+    bool contains(const Comparable &x, int &counter) const{
+        return contains(x, root, counter);
     }
 
     /**
@@ -117,6 +121,15 @@ class AvlTree
     void printEnzyme(const string &x){
         printEnzyme(x, root);
     }
+
+    int numNodes(){
+        return numNodes(root);
+    }
+
+    float avgDepth(){
+        return totalDepth(root, 0.0) / numNodes();
+    }
+
     /**
      * Make the tree logically empty.
      */
@@ -144,11 +157,14 @@ class AvlTree
     /**
      * Remove x from the tree. Nothing is done if x is not found.
      */
-    void remove( const Comparable & x )
-    {
-        remove( x, root );
-    }
+    // void remove( const Comparable & x )
+    // {
+    //     remove( x, root );
+    // }
 
+    void remove(const Comparable &x, int &counter, int &min_counter){
+        remove(x, root, counter, min_counter);
+    }
 
   private:
     struct AvlNode
@@ -166,7 +182,6 @@ class AvlTree
     };
 
     AvlNode *root;
-    int arbit_counter = 0;
 
     /**
      * Internal method to insert into a subtree.
@@ -202,7 +217,8 @@ class AvlTree
             insert( std::move( x ), t->left );
         else if( t->element < x )
             insert( std::move( x ), t->right );
-        
+        else
+            t->element.Merge(x);
         balance( t );
     }
      
@@ -236,6 +252,29 @@ class AvlTree
         balance( t );
     }
     
+    void remove( const Comparable &x, AvlNode * &t, int counter, int min_counter){
+        if( t == nullptr )
+            return;   // Item not found; do nothing
+        
+        if( x < t->element )
+            remove( x, t->left, ++counter, min_counter);
+        else if( t->element < x )
+            remove( x, t->right, ++counter, min_counter );
+        else if( t->left != nullptr && t->right != nullptr ) // Two children
+        {
+            t->element = findMin( t->right )->element;
+            remove( t->element, t->right, ++counter, min_counter);
+        }
+        else
+        {
+            AvlNode *oldNode = t;
+            t = ( t->left != nullptr ) ? t->left : t->right;
+            delete oldNode;
+        }
+        
+        balance( t );
+    }
+
     static const int ALLOWED_IMBALANCE = 1;
 
     // Assume t is balanced or within one of being balanced
@@ -300,6 +339,18 @@ class AvlTree
         else
             return true;    // Match
     }
+
+    bool contains( const Comparable & x, AvlNode *t, int &counter) const
+    {
+        if( t == nullptr )
+            return false;
+        else if( x < t->element )
+            return contains( x, t->left, ++counter);
+        else if( t->element < x )
+            return contains( x, t->right, ++counter);
+        else
+            return true;    // Match
+    }
 /****** NONRECURSIVE VERSION*************************
     bool contains( const Comparable & x, AvlNode *t ) const
     {
@@ -352,6 +403,22 @@ class AvlTree
         }else{
             t->element.getEnzAcro();
         }
+    }
+
+    //print number of nodes
+    int numNodes(AvlNode *t){
+        if(t == nullptr){
+            return 0;
+        }
+        return 1 + numNodes(t->left) + numNodes(t->right);
+    }
+
+    //returns total depth
+    float totalDepth(AvlNode *t, float depth){
+        if(t == nullptr){
+            return 0;
+        }
+        return depth + totalDepth(t->left, depth+1) + totalDepth(t->right, depth+1);
     }
 
     /**

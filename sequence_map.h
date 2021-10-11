@@ -4,15 +4,15 @@
     Header file for sequence_map.cc
 */
 
+
 #include <iostream>
 #include <string>
 #include <vector>
-#include <avl_tree.h>
-#include <bst_tree.h>
+
+using namespace std;
 
 class SequenceMap{
     public:
-        
     //defualt big-five
     SequenceMap() = default;
     SequenceMap(const SequenceMap &rhs) = default;
@@ -20,16 +20,22 @@ class SequenceMap{
     SequenceMap(SequenceMap &&rhs) = default;
     SequenceMap& operator=(SequenceMap &&rhs) = default;
     ~SequenceMap() = default;
+    //end of big five
+
     //additional functions
-    SequenceMap(const std::string &a_rec_seq, const std::string &an_enz_acro){
+
+    //2 parameter constructor
+    SequenceMap(const string &a_rec_seq, const string &an_enz_acro){
         recognition_sequence_ = a_rec_seq;
         enzyme_acronyms_.push_back(an_enz_acro);
     }
 
+    //string comparison operator
     bool operator<(const SequenceMap &rhs) const{
         return recognition_sequence_ < rhs.recognition_sequence_;
     }
 
+    //overload operator
     friend ostream& operator<<(ostream &out, const SequenceMap &another_map){        
         for(unsigned i = 0; i < another_map.enzyme_acronyms_.size(); i++){
             out << another_map.enzyme_acronyms_[i] << " ";
@@ -37,13 +43,15 @@ class SequenceMap{
         return out;
     }
 
+    //merge enzyme_arcos
     void Merge(const SequenceMap &other_sequence){
         for(unsigned i = 0; i < other_sequence.enzyme_acronyms_.size(); i++){
             enzyme_acronyms_.push_back(other_sequence.enzyme_acronyms_[i]);
         }
     }
 
-    std::string getRecSeq(){
+    //getter methods
+    string getRecSeq(){
         return recognition_sequence_;
     }
 
@@ -55,6 +63,6 @@ class SequenceMap{
     }
 
     private:
-    std::string recognition_sequence_;
-    std::vector<std::string> enzyme_acronyms_;
+    string recognition_sequence_;
+    vector<string> enzyme_acronyms_;
 };
