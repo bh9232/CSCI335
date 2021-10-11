@@ -98,10 +98,10 @@ class BinarySearchTree
     /**
      * Returns true if x is found in the tree.
      */
-    bool contains( const Comparable & x ) const
-    {
-        return contains( x, root );
-    }
+    // bool contains( const Comparable & x ) const
+    // {
+    //     return contains( x, root );
+    // }
 
     bool contains(const Comparable &x, int &counter) const{
         return contains(x, root, counter);
@@ -136,7 +136,7 @@ class BinarySearchTree
     }
 
     float avgDepth(){
-        return totalDepth(root, 0.0) / numNodes();
+        return totalDepth(root, 0.0) / numNodes(root);
     }
 
     /**
@@ -207,7 +207,7 @@ class BinarySearchTree
         else if( t->element < x )
             insert( x, t->right );
         else
-            ;  // Duplicate; do nothing
+            t->element.Merge(x);  // Duplicate; do nothing
     }
     
     /**
@@ -225,7 +225,7 @@ class BinarySearchTree
         else if( t->element < x )
             insert( std::move( x ), t->right );
         else
-            ;  // Duplicate; do nothing
+            t->element.Merge(x);  // Duplicate; do nothing
     }
 
     /**
@@ -234,31 +234,30 @@ class BinarySearchTree
      * t is the node that roots the subtree.
      * Set the new root of the subtree.
      */
-    void remove( const Comparable & x, BinaryNode * & t )
-    {
-        if( t == nullptr )
-            return;   // Item not found; do nothing
-        if( x < t->element )
-            remove( x, t->left );
-        else if( t->element < x )
-            remove( x, t->right );
-        else if( t->left != nullptr && t->right != nullptr ) // Two children
-        {
-            t->element = findMin( t->right )->element;
-            remove( t->element, t->right );
-        }
-        else
-        {
-            BinaryNode *oldNode = t;
-            t = ( t->left != nullptr ) ? t->left : t->right;
-            delete oldNode;
-        }
-    }
+    // void remove( const Comparable & x, BinaryNode * & t )
+    // {
+    //     if( t == nullptr )
+    //         return;   // Item not found; do nothing
+    //     if( x < t->element )
+    //         remove( x, t->left );
+    //     else if( t->element < x )
+    //         remove( x, t->right );
+    //     else if( t->left != nullptr && t->right != nullptr ) // Two children
+    //     {
+    //         t->element = findMin( t->right )->element;
+    //         remove( t->element, t->right );
+    //     }
+    //     else
+    //     {
+    //         BinaryNode *oldNode = t;
+    //         t = ( t->left != nullptr ) ? t->left : t->right;
+    //         delete oldNode;
+    //     }
+    // }
 
-    void remove( const Comparable &x, BinaryNode *t, int counter, int min_counter){
+    void remove( const Comparable &x, BinaryNode *&t, int &counter, int &min_counter){
         if( t == nullptr )
             return;   // Item not found; do nothing
-        
         if( x < t->element )
             remove( x, t->left, ++counter, min_counter);
         else if( t->element < x )
@@ -307,17 +306,17 @@ class BinarySearchTree
      * x is item to search for.
      * t is the node that roots the subtree.
      */
-    bool contains( const Comparable & x, BinaryNode *t ) const
-    {
-        if( t == nullptr )
-            return false;
-        else if( x < t->element )
-            return contains( x, t->left );
-        else if( t->element < x )
-            return contains( x, t->right );
-        else
-            return true;    // Match
-    }
+    // bool contains( const Comparable & x, BinaryNode *t ) const
+    // {
+    //     if( t == nullptr )
+    //         return false;
+    //     else if( x < t->element )
+    //         return contains( x, t->left );
+    //     else if( t->element < x )
+    //         return contains( x, t->right );
+    //     else
+    //         return true;    // Match
+    // }
 
     bool contains( const Comparable & x, BinaryNode *t, int &counter) const
     {
@@ -378,7 +377,7 @@ class BinarySearchTree
             cout << "Not Found\n";
         }else if(x < t->element.getRecSeq()){
             printEnzyme(x, t->left);
-        }else if(x > t->element.getRecSeq()){
+        }else if(t->element.getRecSeq() < x){
             printEnzyme(x, t->right);
         }else{
             t->element.getEnzAcro();

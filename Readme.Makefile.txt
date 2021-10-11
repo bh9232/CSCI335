@@ -21,6 +21,4 @@ You delete all .o files and executables.
 - added/modified remove,contain, numNodes, avgDepth, Depth
 
 ------------------------------------------ Imcomplete/Bugs ---------------------------------
-- 2a - BST not giving correct acro
-- 2b - 3/4 of AVL and BST is not working
-- 2c - 3/4 of AVL not working
+- 2b/2c 5b slightly off
