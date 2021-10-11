@@ -18,7 +18,7 @@ You delete all .o files and executables.
 - coded sequence_map.h
 - coded query_tree.cc
 - added printEnzyme method to avl_tree.h and bst_tree.h
-
+- added/modified remove,contain, numNodes, avgDepth, Depth
 
 ------------------------------------------ Imcomplete/Bugs ---------------------------------
 - 2a - BST not giving correct acro
