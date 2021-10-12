@@ -2,7 +2,7 @@
 // Main file for Part2(c) of Homework 2.
 // Code will compile and run after you have completed sequence_map.h.
 
-#include "avl_tree.h"
+#include "avl_tree_mod.h"
 #include "sequence_map.h"
 
 #include <iostream>
