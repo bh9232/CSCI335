@@ -1,3 +1,5 @@
+Brian Hong
+
 You will use this exact Makefile for your Homework 2. Do not submit it! 
 
 You can compile everything by typing 

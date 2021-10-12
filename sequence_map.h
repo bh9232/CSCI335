@@ -1,5 +1,5 @@
 /*
-    Name: Brian Hong
+    Brian Hong
 
     Header file for sequence_map.cc
 */
