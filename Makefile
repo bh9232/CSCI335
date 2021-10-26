@@ -18,31 +18,34 @@ EXEC_DIR=.
 
 
 
+
+
 #Rule for .cpp files
-# .SUFFIXES : .cpp.o 
+# .SUFFIXES : .cc.o 
 
 .cc.o:
 	g++ $(C++FLAG) $(INCLUDES)  -c $< -o $@
 
+
+
+
+#Including
 INCLUDES=  -I. 
+
 
 LIBS_ALL =  -L/usr/lib -L/usr/local/lib $(MATH_LIBS) 
 
 
-ALL_OBJ0=query_tree.o
-PROGRAM_0=query_tree
+#ZEROTH PROGRAM
+ALL_OBJ0=create_and_test_hash.o
+PROGRAM_0=create_and_test_hash
 $(PROGRAM_0): $(ALL_OBJ0)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ0) $(INCLUDES) $(LIBS_ALL)
 
-ALL_OBJ1=test_tree.o
-PROGRAM_1=test_tree
+ALL_OBJ1=spell_check.o
+PROGRAM_1=spell_check
 $(PROGRAM_1): $(ALL_OBJ1)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ1) $(INCLUDES) $(LIBS_ALL)
-
-ALL_OBJ2=test_tree_mod.o
-PROGRAM_2=test_tree_mod
-$(PROGRAM_2): $(ALL_OBJ2)
-	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ2) $(INCLUDES) $(LIBS_ALL)
 
 
 #Compiling all
@@ -50,26 +53,30 @@ $(PROGRAM_2): $(ALL_OBJ2)
 all: 	
 		make $(PROGRAM_0)
 		make $(PROGRAM_1)
-		make $(PROGRAM_2)
 
-run1bst: 	
-		./$(PROGRAM_0) rebase210.txt BST
 
-run1avl: 	
-		./$(PROGRAM_0) rebase210.txt AVL
+run1linear: 	
+		./$(PROGRAM_0) words.txt query_words.txt linear
 
-run2bst: 	
-		./$(PROGRAM_1) rebase210.txt sequences.txt BST
+run1quadratic: 	
+		./$(PROGRAM_0) words.txt query_words.txt quadratic
 
-run2avl: 	
-		./$(PROGRAM_1) rebase210.txt sequences.txt AVL
+run1double: 	
+		./$(PROGRAM_0) words.txt query_words.txt double
+
+run2short: 	
+		./$(PROGRAM_1) document1_short.txt wordsEn.txt
+
+run2: 	
+		./$(PROGRAM_1) document1.txt wordsEn.txt
 
 
 
 #Clean obj files
 
 clean:
-	(rm -f *.o; rm -f test_tree; rm -f query_tree; rm -f test_tree_mod)
+	(rm -f *.o; rm -f $(PROGRAM_0); rm -f $(PROGRAM_1))
+
 
 
 (:
