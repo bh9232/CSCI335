@@ -1,4 +1,4 @@
-// YOUR NAME.
+// Brian Hong
 // spell_check.cc: A simple spell checker.
 
 #include <fstream>
@@ -7,7 +7,7 @@
 
 // You can change to quadratic probing if you
 // haven't implemented double hashing.
-#include "double_hashing.h"
+// #include "double_hashing.h"
 using namespace std;
 
 // You can add more functions here.

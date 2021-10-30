@@ -1,4 +1,4 @@
-// YOUR NAME.
+// Brian Hong
 #include <fstream>
 #include <iostream>
 #include <string>
