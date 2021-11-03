@@ -4,10 +4,11 @@
 #include <string>
 
 // Uncomment when you implemented linear probing & double hashing
-//#include "linear_probing.h"
+
 //#include "double_hashing.h"
 
 #include "quadratic_probing.h"
+#include "linear_probing.h"
 
 using namespace std;
 
@@ -63,13 +64,11 @@ int testHashingWrapper(int argument_count, char **argument_list) {
 
     if (param_flag == "linear") {
       // Uncomment below when you have implemented linear probing.
-      // HashTableLinear<string> linear_probing_table;
-      // TestFunctionForHashTable(linear_probing_table, words_filename,
-      // 			 query_filename);
+      HashTableLinear<string> linear_probing_table;
+      TestFunctionForHashTable(linear_probing_table, words_filename, query_filename);
     } else if (param_flag == "quadratic") {
-	HashTable<string> quadratic_probing_table;
-	TestFunctionForHashTable(quadratic_probing_table, words_filename,
-				 query_filename);
+        HashTable<string> quadratic_probing_table;
+        TestFunctionForHashTable(quadratic_probing_table, words_filename, query_filename);
     } else if (param_flag == "double") {
 	cout << "r_value: " << R << endl;
     // Uncomment below when you have implemented double hashing.
