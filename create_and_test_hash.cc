@@ -53,7 +53,7 @@ int testHashingWrapper(int argument_count, char **argument_list) {
     const string words_filename(argument_list[1]);
     const string query_filename(argument_list[2]);
     const string param_flag(argument_list[3]);
-    int R = 10;
+    int R = 89;
 
     if (argument_count == 5) {
 	const string rvalue(argument_list[4]);
