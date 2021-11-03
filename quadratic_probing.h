@@ -39,8 +39,9 @@ int NextPrime(size_t n) {
 // Quadratic probing implementation.
 template <typename HashedObj>
 class HashTable {
- public:
+public:
   enum EntryType {ACTIVE, EMPTY, DELETED};
+  int temp_collisions_ = 0;
 
   explicit HashTable(size_t size = 101) : array_(NextPrime(size))
     { MakeEmpty(); }
@@ -57,6 +58,7 @@ class HashTable {
 
   bool Insert(const HashedObj & x) {
     // Insert x as active
+    this->total_elements_++;
     size_t current_pos = FindPos(x);
     if (IsActive(current_pos))
       return false;
@@ -86,6 +88,14 @@ class HashTable {
     return true;
   }
 
+  int Get(HashedObj &x){
+    size_t current_pos = FindPos(x);
+    if(!IsActive(current_pos)){
+      throw NotFound();
+    }
+    return temp_collisions_;
+  }
+
   bool Remove(const HashedObj & x) {
     size_t current_pos = FindPos(x);
     if (!IsActive(current_pos))
@@ -95,7 +105,19 @@ class HashTable {
     return true;
   }
 
- private:        
+  int TotalElements(){
+    return this->total_elements_;
+  }
+
+  int TotalCollisions(){
+    return total_collisions_;
+  }
+
+  int Size(){
+    return array_.size();
+  }
+
+private:        
   struct HashEntry {
     HashedObj element_;
     EntryType info_;
@@ -106,25 +128,34 @@ class HashTable {
     HashEntry(HashedObj && e, EntryType i = EMPTY)
     :element_{std::move(e)}, info_{ i } {}
   };
-    
+  
+  struct NotFound : public std::exception{
+    const char *what() const throw(){
+      return "Word Not Found";
+    }
+  };
 
   std::vector<HashEntry> array_;
   size_t current_size_;
+  size_t total_elements_ = 0;
+  size_t total_collisions_ = 0;
 
   bool IsActive(size_t current_pos) const
   { return array_[current_pos].info_ == ACTIVE; }
 
-  size_t FindPos(const HashedObj & x) const {
+  size_t FindPos(const HashedObj & x) {
     size_t offset = 1;
     size_t current_pos = InternalHash(x);
+    temp_collisions_ = 1;
       
-    while (array_[current_pos].info_ != EMPTY &&
-	   array_[current_pos].element_ != x) {
+    while (array_[current_pos].info_ != EMPTY && array_[current_pos].element_ != x) {
+      temp_collisions_++;
       current_pos += offset;  // Compute ith probe.
       offset += 2;
       if (current_pos >= array_.size())
-	current_pos -= array_.size();
+	      current_pos -= array_.size();
     }
+    total_collisions_ += temp_collisions_ - 1;
     return current_pos;
   }
 
