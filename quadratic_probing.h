@@ -1,3 +1,4 @@
+// Brian Hong
 #ifndef QUADRATIC_PROBING_H
 #define QUADRATIC_PROBING_H
 
