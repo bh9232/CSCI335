@@ -4,11 +4,9 @@
 #include <string>
 
 // Uncomment when you implemented linear probing & double hashing
-
-//#include "double_hashing.h"
-
 #include "quadratic_probing.h"
 #include "linear_probing.h"
+#include "double_hashing.h"
 
 using namespace std;
 
@@ -42,8 +40,8 @@ void TestFunctionForHashTable(HashTableType &hash_table, const string &words_fil
         try{
             int collisions = hash_table.Get(line);
             cout << line << " Found " << collisions << endl;
-        }catch(exception &e){
-            cout << line << " Not_Found " << hash_table.temp_collisions_ << endl;
+        }catch(const exception &e){
+            cout << line << " Not_Found " << hash_table.collisions_ << endl;
         }
     }
 }
@@ -55,7 +53,7 @@ int testHashingWrapper(int argument_count, char **argument_list) {
     const string words_filename(argument_list[1]);
     const string query_filename(argument_list[2]);
     const string param_flag(argument_list[3]);
-    int R = 89;
+    int R = 10;
 
     if (argument_count == 5) {
 	const string rvalue(argument_list[4]);
@@ -72,8 +70,9 @@ int testHashingWrapper(int argument_count, char **argument_list) {
     } else if (param_flag == "double") {
 	cout << "r_value: " << R << endl;
     // Uncomment below when you have implemented double hashing.
-	// HashTableDouble<string> double_probing_table;
-	// TestFunctionForHashTable(double_probing_table, words_filename, query_filename);
+	HashTableDouble<string> double_probing_table;
+    double_probing_table.SetR(R);
+	TestFunctionForHashTable(double_probing_table, words_filename, query_filename);
     } else {
 	cout << "Unknown tree type " << param_flag
 	     << " (User should provide linear, quadratic, or double)" << endl;

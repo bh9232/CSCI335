@@ -12,7 +12,7 @@ template <typename HashedObj>
 class HashTableLinear {
 public:
   enum EntryType {ACTIVE, EMPTY, DELETED};
-  int temp_collisions_ = 0;
+  int collisions_ = 0;
 
   explicit HashTableLinear(size_t size = 101) : array_(NextPrime(size))
     { MakeEmpty(); }
@@ -65,7 +65,7 @@ public:
     if(!IsActive(current_pos)){
       throw NotFound();
     }
-    return temp_collisions_;
+    return collisions_;
   }
 
   bool Remove(const HashedObj & x) {
@@ -118,16 +118,16 @@ private:
   size_t FindPos(const HashedObj & x) {
     size_t offset = 1;
     size_t current_pos = InternalHash(x);
-    temp_collisions_ = 1;
+    collisions_ = 1;
       
     while (array_[current_pos].info_ != EMPTY && array_[current_pos].element_ != x) {
-      temp_collisions_++;
+      collisions_++;
       current_pos += offset;  // Compute ith probe.
       offset += 2;
       if (current_pos >= array_.size())
 	      current_pos -= array_.size();
     }
-    total_collisions_ += temp_collisions_ - 1;
+    total_collisions_ += collisions_ - 1;
     return current_pos;
   }
 
