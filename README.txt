@@ -13,4 +13,3 @@ Brian Hong
 
 ------------------ Imcomplete/Bugs --------------
 - probe count and collisions count is off on gradescope
-- SpellChecker(...) fails to properly check after one incorrect word

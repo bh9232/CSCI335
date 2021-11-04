@@ -38,10 +38,9 @@ void TestFunctionForHashTable(HashTableType &hash_table, const string &words_fil
 
     while(query >> line){
         try{
-            int collisions = hash_table.Get(line);
-            cout << line << " Found " << collisions << endl;
+            cout << line << " Found " << hash_table.FindProbe(line) << endl;
         }catch(const exception &e){
-            cout << line << " Not_Found " << hash_table.collisions_ << endl;
+            cout << line << " Not_Found " << hash_table.FindProbe(line) << endl;
         }
     }
 }

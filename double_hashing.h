@@ -5,15 +5,13 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-
+#include "quadratic_probing.h"
 
 // Double Hash probing implementation.
 template <typename HashedObj>
 class HashTableDouble {
 public:
     enum EntryType {ACTIVE, EMPTY, DELETED};
-    int collisions_ = 0;
-
 
     explicit HashTableDouble(size_t size = 101) : array_(NextPrime(size))
     { MakeEmpty(); }
@@ -22,12 +20,13 @@ public:
         r_value = num;
     }
 
-    bool Contains(const HashedObj & x) const {
+    bool Contains(const HashedObj & x)  {
         return IsActive(FindPos(x));
     }
 
     void MakeEmpty() {
         current_size_ = 0;
+        total_collisions_ = 0;
         for (auto &entry : array_)
             entry.info_ = EMPTY;
     }
@@ -64,16 +63,6 @@ public:
         return true;
     }
 
-    //return number of probes to get x
-    //if not there throw exception to stop 
-    int Get(HashedObj &x){
-        size_t current_pos = FindPos(x);
-        if(!IsActive(current_pos)){
-            throw NotFound();
-        }
-        return collisions_;
-    }
-
     bool Remove(const HashedObj & x) {
         size_t current_pos = FindPos(x);
         if (!IsActive(current_pos))
@@ -94,6 +83,19 @@ public:
     int Size(){
         return array_.size();
     }
+    
+    int FindProbe(const HashedObj &x){
+        std::hash<HashedObj> hf;
+        size_t current_pos = InternalHash(x);
+        size_t probes_ = 1;
+            
+        while (array_[current_pos].info_ != EMPTY && array_[current_pos].element_ != x) {
+            probes_++;
+            current_pos += (r_value - (hf(x) % r_value));
+            current_pos = current_pos % array_.size();
+        }
+        return probes_;
+  }
 
 private:        
   struct HashEntry {
@@ -105,12 +107,6 @@ private:
 
     HashEntry(HashedObj && e, EntryType i = EMPTY)
     :element_{std::move(e)}, info_{ i } {}
-    };
-
-    struct NotFound : public std::exception{
-        const char *what() const throw(){
-            return "Word Not Found";
-        }
     };
 
     std::vector<HashEntry> array_;
@@ -125,14 +121,12 @@ private:
     size_t FindPos(const HashedObj & x) {
         std::hash<HashedObj> hf;
         size_t current_pos = InternalHash(x);
-        collisions_ = 1;
             
         while (array_[current_pos].info_ != EMPTY && array_[current_pos].element_ != x) {
-            collisions_++;
+            total_collisions_++;
             current_pos += (r_value - (hf(x) % r_value));
             current_pos = current_pos % array_.size();
         }
-        total_collisions_ += collisions_;
         return current_pos;
     }
 
@@ -156,28 +150,7 @@ private:
         return hf(x) % array_.size( );
     }
 
-    // Internal method to test if a positive number is prime.
-    bool IsPrime(size_t n) {
-        if( n == 2 || n == 3 )
-        return true;
-
-        if( n == 1 || n % 2 == 0 )
-        return false;
-
-        for( int i = 3; i * i <= n; i += 2 )
-        if( n % i == 0 )
-            return false;
-
-        return true;
-    }
-
-    // Internal method to return a prime number at least as large as n.
-    int NextPrime(size_t n) {
-        if (n % 2 == 0)
-            ++n;  
-        while (!IsPrime(n)) n += 2;  
-        return n;
-    }
+    
 
 };
 

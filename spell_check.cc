@@ -30,69 +30,58 @@ HashTableDouble<string> MakeDictionary(const string &dictionary_file) {
 // For each word in the document_file, it checks the 3 cases for a word being
 // misspelled and prints out possible corrections
 void SpellChecker(HashTableDouble<string> &dictionary, const string &document_file) {
-  fstream document(document_file);
+  ifstream document(document_file);
   string line;
   string temp = "";
   string alphabet = "abcdefghijklmnopqrstuvwxyz";
-  vector<string> potential_spellings;
-  vector<string> error_type;
 
   while(document >> line){
     for(size_t i = 0; i < line.size(); i++){
       temp += tolower(line[i]);
       if(temp[i] == ',' || temp[i] == '.'){
-        temp.erase(i, i+1);
+        temp.erase(i);
       }
     }
     line = temp;
     temp.clear();
 
-    try{
-      dictionary.Get(line);
+    if(dictionary.Contains(line)){
       cout << line << " is CORRECT" << endl;
-    }catch(const exception &e){
+    }else{
       cout << line << " is INCORRECT" << endl;
-      temp = line;
 
       //all possible misspellings
       //Case A - missing letter
       for(size_t i = 0; i < 26; i++){
-        for(size_t j = 0; j < line.size(); j++){
-          temp.insert(j, string(1, alphabet[i]));
-          potential_spellings.push_back(temp);
-          error_type.push_back("A");
-          temp = line;
+        for(size_t j = 0; j <= line.size(); j++){
+          string temp2(line);
+          temp2.insert(j, string(1, alphabet[i]));
+          if(dictionary.Contains(temp2)){
+          cout << "*** " << line << " -> " << temp2 << " *** case A" << endl;
+          }
+          
         }
       }
 
       //Case B - extra letter
       for(size_t i = 0; i < line.size(); i++){
-        temp.erase(i, 1);
-        potential_spellings.push_back(temp);
-        error_type.push_back("B");
-        temp = line;
+        string temp2(line);
+        temp2.erase(i, 1);
+        if(dictionary.Contains(temp2)){
+          cout << "*** " << line << " -> " << temp2 << " *** case B" << endl;
+        }
+        
       }
 
       //Case C - swapping letters
       for(size_t i = 0; i < line.size()-1; i++){
-        swap(temp[i], temp[i+1]);
-        potential_spellings.push_back(temp);
-        error_type.push_back("C");
-        temp = line;
-      }
-      
-      //trying potential spellings are in dictionary 
-      for(size_t i = 0; i < potential_spellings.size(); i++){
-        try{
-          if(dictionary.Get(potential_spellings[i])){
-            cout << "*** " << line << " -> " << potential_spellings[i] << " *** case " << error_type[i] << endl;
-          }
-        }catch(const exception &e){
-          break;
+        string temp2(line);
+        swap(temp2[i], temp2[i+1]);
+        if(dictionary.Contains(temp2)){
+          cout << "*** " << line << " -> " << temp2 << " *** case C" << endl;
         }
+        
       }
-      potential_spellings.clear();
-      error_type.clear();
     }
   }
 }
