@@ -123,7 +123,6 @@ private:
     while (array_[current_pos].info_ != EMPTY && array_[current_pos].element_ != x) {
       collisions_++;
       current_pos += offset;  // Compute ith probe.
-      offset += 2;
       if (current_pos >= array_.size())
 	      current_pos -= array_.size();
     }
