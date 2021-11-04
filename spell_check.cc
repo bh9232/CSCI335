@@ -29,7 +29,7 @@ HashTableDouble<string> MakeDictionary(const string &dictionary_file) {
 
 // For each word in the document_file, it checks the 3 cases for a word being
 // misspelled and prints out possible corrections
-void SpellChecker(const HashTableDouble<string>& dictionary, const string &document_file) {
+void SpellChecker(HashTableDouble<string> &dictionary, const string &document_file) {
   fstream document(document_file);
   string line;
   string temp = "";
@@ -39,9 +39,9 @@ void SpellChecker(const HashTableDouble<string>& dictionary, const string &docum
 
   while(document >> line){
     for(size_t i = 0; i < line.size(); i++){
-      temp = tolower(line[i]);
+      temp += tolower(line[i]);
       if(temp[i] == ',' || temp[i] == '.'){
-        temp.erase(i, 1);
+        temp.erase(i, i+1);
       }
     }
     line = temp;
@@ -55,7 +55,6 @@ void SpellChecker(const HashTableDouble<string>& dictionary, const string &docum
       temp = line;
 
       //all possible misspellings
-
       //Case A - missing letter
       for(size_t i = 0; i < 26; i++){
         for(size_t j = 0; j < line.size(); j++){
@@ -75,24 +74,27 @@ void SpellChecker(const HashTableDouble<string>& dictionary, const string &docum
       }
 
       //Case C - swapping letters
-      for(size_t i = 0; i < line.size(); i++){
+      for(size_t i = 0; i < line.size()-1; i++){
         swap(temp[i], temp[i+1]);
         potential_spellings.push_back(temp);
         error_type.push_back("C");
         temp = line;
       }
-
+      
+      //trying potential spellings are in dictionary 
       for(size_t i = 0; i < potential_spellings.size(); i++){
         try{
-          dictionary.Get(potential_spellings[i]);
-          cout << "*** " << line << " -> " << potential_spellings[i] << " *** case " << error_type[i] << endl;
-        }catch(const exception &e){}
+          if(dictionary.Get(potential_spellings[i])){
+            cout << "*** " << line << " -> " << potential_spellings[i] << " *** case " << error_type[i] << endl;
+          }
+        }catch(const exception &e){
+          break;
+        }
       }
+      potential_spellings.clear();
+      error_type.clear();
     }
-    potential_spellings.clear();
-    error_type.clear();
   }
-
 }
 
 // @argument_count: same as argc in main

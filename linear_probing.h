@@ -59,7 +59,8 @@ public:
     return true;
   }
 
-  //finding x
+  //return number of probes to get x
+  //if not there throw exception to stop 
   int Get(HashedObj &x){
     size_t current_pos = FindPos(x);
     if(!IsActive(current_pos)){

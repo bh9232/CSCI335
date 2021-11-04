@@ -8,7 +8,9 @@ Brian Hong
 - created double_hashing.h
     - modified FindPos()
     - otherwise same as quadratic_probing.h and linear_probing.h
+- modified spell_check.cc
+    - added code to MakeDictionary(...), SpellChecker(...)
 
 ------------------ Imcomplete/Bugs --------------
 - probe count and collisions count is off on gradescope
-- part 3 
+- SpellChecker(...) fails to properly check after one incorrect word

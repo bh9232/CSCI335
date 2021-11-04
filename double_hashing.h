@@ -23,75 +23,76 @@ public:
     }
 
     bool Contains(const HashedObj & x) const {
-    return IsActive(FindPos(x));
+        return IsActive(FindPos(x));
     }
 
     void MakeEmpty() {
-    current_size_ = 0;
-    for (auto &entry : array_)
-        entry.info_ = EMPTY;
+        current_size_ = 0;
+        for (auto &entry : array_)
+            entry.info_ = EMPTY;
     }
 
     bool Insert(const HashedObj & x) {
-    // Insert x as active
-    this->total_elements_++;
-    size_t current_pos = FindPos(x);
-    if (IsActive(current_pos))
-        return false;
+        // Insert x as active
+        this->total_elements_++;
+        size_t current_pos = FindPos(x);
+        if (IsActive(current_pos))
+            return false;
 
-    array_[current_pos].element_ = x;
-    array_[current_pos].info_ = ACTIVE;
+        array_[current_pos].element_ = x;
+        array_[current_pos].info_ = ACTIVE;
 
-    // Rehash; see Section 5.5
-    if (++current_size_ > array_.size() / 2)
-        Rehash();    
-    return true;
+        // Rehash; see Section 5.5
+        if (++current_size_ > array_.size() / 2)
+            Rehash();    
+        return true;
     }
 
     bool Insert(HashedObj && x) {
-    // Insert x as active
-    size_t current_pos = FindPos(x);
-    if (IsActive(current_pos))
-        return false;
+        // Insert x as active
+        size_t current_pos = FindPos(x);
+        if (IsActive(current_pos))
+            return false;
 
-    array_[current_pos] = std::move(x);
-    array_[current_pos].info_ = ACTIVE;
+        array_[current_pos] = std::move(x);
+        array_[current_pos].info_ = ACTIVE;
 
-    // Rehash; see Section 5.5
-    if (++current_size_ > array_.size() / 2)
-        Rehash();
+        // Rehash; see Section 5.5
+        if (++current_size_ > array_.size() / 2)
+            Rehash();
 
-    return true;
+        return true;
     }
 
-    //finding x
+    //return number of probes to get x
+    //if not there throw exception to stop 
     int Get(HashedObj &x){
-    size_t current_pos = FindPos(x);
-    if(!IsActive(current_pos)){
-        throw NotFound();
-    }
-    return collisions_;
+        size_t current_pos = FindPos(x);
+        if(!IsActive(current_pos)){
+            throw NotFound();
+        }
+        return collisions_;
     }
 
     bool Remove(const HashedObj & x) {
-    size_t current_pos = FindPos(x);
-    if (!IsActive(current_pos))
-        return false;
+        size_t current_pos = FindPos(x);
+        if (!IsActive(current_pos))
+            return false;
 
-    array_[current_pos].info_ = DELETED;
-    return true;
+        array_[current_pos].info_ = DELETED;
+        return true;
     }
 
     int TotalElements(){
-    return this->total_elements_;
+        return this->total_elements_;
     }
 
     int TotalCollisions(){
-    return total_collisions_;
+        return total_collisions_;
     }
 
     int Size(){
-    return array_.size();
+        return array_.size();
     }
 
 private:        
@@ -107,9 +108,9 @@ private:
     };
 
     struct NotFound : public std::exception{
-    const char *what() const throw(){
-        return "Word Not Found";
-    }
+        const char *what() const throw(){
+            return "Word Not Found";
+        }
     };
 
     std::vector<HashEntry> array_;
@@ -136,18 +137,18 @@ private:
     }
 
     void Rehash() {
-    std::vector<HashEntry> old_array = array_;
+        std::vector<HashEntry> old_array = array_;
 
-    // Create new double-sized, empty table.
-    array_.resize(NextPrime(2 * old_array.size()));
-    for (auto & entry : array_)
-        entry.info_ = EMPTY;
+        // Create new double-sized, empty table.
+        array_.resize(NextPrime(2 * old_array.size()));
+        for (auto & entry : array_)
+            entry.info_ = EMPTY;
 
-    // Copy table over.
-    current_size_ = 0;
-    for (auto & entry :old_array)
-        if (entry.info_ == ACTIVE)
-            Insert(std::move(entry.element_));
+        // Copy table over.
+        current_size_ = 0;
+        for (auto & entry :old_array)
+            if (entry.info_ == ACTIVE)
+                Insert(std::move(entry.element_));
     }
 
     size_t InternalHash(const HashedObj & x) const {
@@ -157,25 +158,25 @@ private:
 
     // Internal method to test if a positive number is prime.
     bool IsPrime(size_t n) {
-    if( n == 2 || n == 3 )
-    return true;
+        if( n == 2 || n == 3 )
+        return true;
 
-    if( n == 1 || n % 2 == 0 )
-    return false;
-
-    for( int i = 3; i * i <= n; i += 2 )
-    if( n % i == 0 )
+        if( n == 1 || n % 2 == 0 )
         return false;
 
-    return true;
+        for( int i = 3; i * i <= n; i += 2 )
+        if( n % i == 0 )
+            return false;
+
+        return true;
     }
 
     // Internal method to return a prime number at least as large as n.
     int NextPrime(size_t n) {
-    if (n % 2 == 0)
-        ++n;  
-    while (!IsPrime(n)) n += 2;  
-    return n;
+        if (n % 2 == 0)
+            ++n;  
+        while (!IsPrime(n)) n += 2;  
+        return n;
     }
 
 };
