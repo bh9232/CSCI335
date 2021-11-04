@@ -20,7 +20,7 @@ HashTableDouble<string> MakeDictionary(const string &dictionary_file) {
   fstream dictionary(dictionary_file);
   string line;
 
-  while(file >> line){
+  while(dictionary >> line){
     dictionary_hash.Insert(line);
   }
 
