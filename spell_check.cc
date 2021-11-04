@@ -7,7 +7,7 @@
 
 // You can change to quadratic probing if you
 // haven't implemented double hashing.
-// #include "double_hashing.h"
+#include "double_hashing.h"
 using namespace std;
 
 // You can add more functions here.
@@ -17,13 +17,29 @@ using namespace std;
 HashTableDouble<string> MakeDictionary(const string &dictionary_file) {
   HashTableDouble<string> dictionary_hash;
   // Fill dictionary_hash.
+  fstream dictionary(dictionary_file);
+  string line;
+
+  while(file >> line){
+    dictionary_hash.Insert(line);
+  }
+
   return dictionary_hash;
 }
 
 // For each word in the document_file, it checks the 3 cases for a word being
 // misspelled and prints out possible corrections
-void SpellChecker(const HashTableDouble<string>& dictionary,
-		  const string &document_file) {
+void SpellChecker(const HashTableDouble<string>& dictionary, const string &document_file) {
+  fstream document(document_file);
+  string line;
+  string alphabet = "abcdefghijklmnopqrstuvwxyz";
+  vector<string> potential_spellings;
+
+  while(document >> line){
+    for(size_t x = 0; i < line.size(); i++){
+      line.
+    }
+  }
 
 }
 
