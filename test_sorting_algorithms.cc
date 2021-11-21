@@ -1,6 +1,11 @@
 // Homework 4
 // Testing Sorting Algorithms
-// YOUR NAME
+// Brian Hong
+
+/**
+ * Coded VerifyOrder function that verifies that a vector is ordered
+ * Coded functions that generated a random vector and a random sorted vector
+ */
 
 #include "Sort.h"
 #include <chrono>
@@ -37,6 +42,11 @@ void TestTiming() {
 vector<int> GenerateRandomVector(size_t size_of_vector) {
   // Use rand() to generate random integer
   // Add code
+  vector<int> vector;
+  for(size_t i = 0; i < size_of_vector; i++){
+    vector.pushback(rand());
+  }
+  return vector;
 }
 
 // Generates and returns sorted vector of size @size_of_vector.
@@ -44,6 +54,20 @@ vector<int> GenerateRandomVector(size_t size_of_vector) {
 // Otherwise returns vector sorted from large to small
 vector<int> GenerateSortedVector(size_t size_of_vector, bool smaller_to_larger) {
   // Add code
+  vector<int> vector = GenerateRandomVector(size_of_vector);
+
+  if(smaller_to_larger){
+    vector = insertionSort(vector);
+  }else{
+    vector<int> temp(size_of_vector);
+    temp = insertionSort(vector);
+    vector.clear();
+    for(size_t i = size_of_vector; i > 0; i--){
+      vector.push_back(temp[i]);
+    }
+    temp.clear();
+  }
+  return vector;
 }
 
 // Verifies that a vector is sorted given a comparator.
@@ -52,6 +76,14 @@ vector<int> GenerateSortedVector(size_t size_of_vector, bool smaller_to_larger) 
 template <typename Comparable, typename Comparator>
 bool VerifyOrder(const vector<Comparable> &input, Comparator less_than) {
   // Add code
+  for(unsigned i = 0; i < input.size(); i++){
+    if(!less_than(input[i], input[i+1])){
+      //do nothing
+    }else{
+      return false;
+    }
+  }
+  return true;
 }
 
 // Wrapper function to test different sorting algorithms. See homework's PDF for details.
