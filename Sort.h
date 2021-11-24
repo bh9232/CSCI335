@@ -129,9 +129,9 @@ void percDown( vector<Comparable> & a, int i, int n, Comparator less_than){
 
   for( tmp = std::move( a[ i ] ); leftChild( i ) < n; i = child ){
     child = leftChild( i );
-    if( child != n - 1 && less_than(a[child], a[child+1])
+    if(child != n - 1 && less_than(a[child], a[child+1]))
       ++child;
-    if(less_than(tmp, a[child])
+    if(less_than(tmp, a[child]))
       a[i] = std::move(a[child]);
     else
       break;
@@ -212,7 +212,7 @@ void merge( vector<Comparable> & a, vector<Comparable> & tmpArray, int leftPos, 
 
   // Main loop
   while( leftPos <= leftEnd && rightPos <= rightEnd )
-    if(!less_than(a[ leftPos ], a[ rightPos ] )
+    if(!less_than(a[ leftPos ], a[ rightPos ] ))
       tmpArray[ tmpPos++ ] = std::move( a[ leftPos++ ] );
     else
       tmpArray[ tmpPos++ ] = std::move( a[ rightPos++ ] );

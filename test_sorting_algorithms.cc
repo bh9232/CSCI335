@@ -44,7 +44,7 @@ vector<int> GenerateRandomVector(size_t size_of_vector) {
   // Add code
   vector<int> vector;
   for(size_t i = 0; i < size_of_vector; i++){
-    vector.pushback(rand());
+    vector.push_back(rand());
   }
   return vector;
 }
@@ -54,20 +54,23 @@ vector<int> GenerateRandomVector(size_t size_of_vector) {
 // Otherwise returns vector sorted from large to small
 vector<int> GenerateSortedVector(size_t size_of_vector, bool smaller_to_larger) {
   // Add code
-  vector<int> vector = GenerateRandomVector(size_of_vector);
+  vector<int> vec = GenerateRandomVector(size_of_vector);
 
-  if(smaller_to_larger){
-    vector = insertionSort(vector);
-  }else{
-    vector<int> temp(size_of_vector);
-    temp = insertionSort(vector);
-    vector.clear();
-    for(size_t i = size_of_vector; i > 0; i--){
-      vector.push_back(temp[i]);
+  for(size_t i = 0; i < vec.size(); i++){
+    if(smaller_to_larger){
+      insertionSort(vec);
+    }else{
+      vector<int> temp;
+      insertionSort(vec);
+      temp = vec;
+      vec.clear();
+      for(size_t i = size_of_vector; i > 0; i--){
+        vec.push_back(temp[i]);
+      }
+      temp.clear();
     }
-    temp.clear();
   }
-  return vector;
+  return vec;
 }
 
 // Verifies that a vector is sorted given a comparator.
