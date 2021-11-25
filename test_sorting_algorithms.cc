@@ -112,12 +112,28 @@ void testSortingWrapper(int argc, char **argv) {
 
   cout << "Running sorting algorithms: " << input_type << " " << input_size << " numbers " << comparison_type << endl;
   vector<int> input_vector;
-  if (input_type == "random") {
+  if(input_type == "random") {
     // Generate random vector @input_vector.
-    
-  } else {
+    input_vector = GenerateRandomVector(input_size);
+  }else if(input_type == "sorted_small_to_large" && comparison_type == "less"){
     // Generate sorted vector @input_vector.
-
+    input_vector = GenerateSortedVector(input_size, true);
+    MergeSort(input_vector, less<int>{});
+    HeapSort(input_vector, less<int>{});
+    quicksort(input_vector, less<int>{});
+    QuickSort(input_vector, less<int>{});
+    QuickSort2(input_vector, less<int>{});
+    QuickSort3(input_vector, less<int>{});
+  }else if(input_type == "sorted_large_to_small" && comparison_type == "greater"){
+    input_vector = GenerateSortedVector(input_size, false);
+    MergeSort(input_vector, greater<int>{});
+    HeapSort(input_vector, greater<int>{});
+    quicksort(input_vector, greater<int>{});
+    QuickSort(input_vector, greater<int>{});
+    QuickSort2(input_vector, greater<int>{});
+    QuickSort3(input_vector, greater<int>{});
+  }else{
+    cout << "invalid input_type or comparison_type" << endl;
   }
 
   // Call HeapSort / MergeSort / QuickSort  using appropriate input.
