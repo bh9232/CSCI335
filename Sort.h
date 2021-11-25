@@ -286,11 +286,11 @@ template <typename Comparable, typename Comparator>
 void middlePivot(vector<Comparable> & a, int left, int right, Comparator less_than){
   if(left + 10 <= right){
     int mid = (left + right) / 2;
-    swap(a[mid], a[right-1]);
-    const Comparable & pivot = a[right-1];
+    swap(a[mid], a[right]);
+    const Comparable & pivot = a[right];
 
-    int i = left;
-    int j = right-1;
+    int i = left-1;
+    int j = right;
     for(;;){
       while(less_than(a[++i], pivot)){}
       while(less_than(pivot, a[--j])){}
@@ -300,7 +300,7 @@ void middlePivot(vector<Comparable> & a, int left, int right, Comparator less_th
         break;
       }
     }
-    swap(a[i], a[right-1]);
+    swap(a[i], a[right]);
     middlePivot(a, left, i-1, less_than);
     middlePivot(a, i+1, right, less_than);
   }else{
@@ -310,27 +310,23 @@ void middlePivot(vector<Comparable> & a, int left, int right, Comparator less_th
 
 template <typename Comparable, typename Comparator>
 void first(vector<Comparable> & a, int left, int right, Comparator less_than){
-  if(left + 10 < right){
+  if(left + 10 <= right){
     int start = left;
-    swap(a[start], a[right-1]);
-    const Comparable & pivot = a[right-1];
+    swap(a[start], a[right]);
+    const Comparable & pivot = a[right];
 
-    int i = left;
-    int j = right-1;
+    int i = left - 1;
+    int j = right;
     for(;;){
-      while(less_than(a[i], pivot)){
-        i++;
-      }
-      while(less_than(pivot, a[j])){
-        --j;
-      }
+      while(less_than(a[++i], pivot)){}
+      while(less_than(pivot, a[--j])){}
       if(i < j){
         swap(a[i], a[j]);
       }else{
         break;
       }
     }
-    swap(a[i], a[right-1]);
+    swap(a[i], a[right]);
     first(a, left, i-1, less_than);
     first(a, i+1, right, less_than);
   }else{
@@ -411,11 +407,12 @@ void quicksort( vector<Comparable> & a )
   quicksort( a, 0, a.size( ) - 1 );
 }
 
-template <typename Comparable, typename Comparator>
-void quicksort( vector<Comparable> & a, Comparator less_than)
-{
-  quicksort( a, 0, a.size( ) - 1, less_than );
-}
+// no need for this (already at the end)
+// template <typename Comparable, typename Comparator>
+// void quicksort( vector<Comparable> & a, Comparator less_than)
+// {
+//   quicksort( a, 0, a.size( ) - 1, less_than );
+// }
 
 /**
  * Internal selection method that makes recursive calls.
@@ -588,7 +585,7 @@ template <typename Comparable, typename Comparator>
 void QuickSort(vector<Comparable> &a, Comparator less_than) {
   // Add code. You can use any of functions above (afrer you modified them), or any other helper
   // function you write.
-  median3(a, 0, a.size()-1, less_than);
+  quicksort(a, 0, a.size()-1, less_than);
 }
 
 // Driver for QuickSort (middle pivot).
