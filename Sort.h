@@ -224,7 +224,7 @@ void merge( vector<Comparable> & a, vector<Comparable> & tmpArray, int leftPos, 
 
   // Main loop
   while( leftPos <= leftEnd && rightPos <= rightEnd )
-    if(!less_than(a[ leftPos ], a[ rightPos ] ))
+    if(!less_than(a[rightPos], a[leftPos] ))
       tmpArray[ tmpPos++ ] = std::move( a[ leftPos++ ] );
     else
       tmpArray[ tmpPos++ ] = std::move( a[ rightPos++ ] );
@@ -318,8 +318,12 @@ void first(vector<Comparable> & a, int left, int right, Comparator less_than){
     int i = left;
     int j = right-1;
     for(;;){
-      while(less_than(a[++i], pivot)){}
-      while(less_than(pivot, a[--j])){}
+      while(less_than(a[i], pivot)){
+        i++;
+      }
+      while(less_than(pivot, a[j])){
+        --j;
+      }
       if(i < j){
         swap(a[i], a[j]);
       }else{
@@ -391,11 +395,11 @@ void quicksort( vector<Comparable> & a, int left, int right, Comparator less_tha
 
     std::swap( a[ i ], a[ right - 1 ] );  // Restore pivot
 
-    quicksort( a, left, i - 1 );     // Sort small elements
-    quicksort( a, i + 1, right );    // Sort large elements
+    quicksort( a, left, i - 1, less_than );     // Sort small elements
+    quicksort( a, i + 1, right, less_than );    // Sort large elements
   }
   else  // Do an insertion sort on the subarray
-    insertionSort( a, left, right );
+    insertionSort( a, left, rightm less_than );
 }
 
 /**

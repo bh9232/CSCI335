@@ -29,7 +29,7 @@ long long ComputeDuration(chrono::high_resolution_clock::time_point start_time,
 template <typename Comparable, typename Comparator>
 bool VerifyOrder(const vector<Comparable> &input, Comparator less_than) {
   // Add code
-  for(unsigned int i = 0; i < input.size(); i++){
+  for(unsigned int i = 1; i < input.size(); i++){
     if(!less_than(input[i], input[i-1])){
       //do nothing
     }else{
