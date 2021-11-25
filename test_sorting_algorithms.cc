@@ -177,23 +177,23 @@ void testSortingWrapper(int argc, char **argv) {
   }
 
   // This block of code to be removed for your final submission.
-  TestTiming();
+  // TestTiming();
 
-  cout << "Running sorting algorithms: " << input_type << " " << input_size << " numbers " << comparison_type << endl;
-  vector<int> input_vector;
-  if(input_type == "random") {
-    // Generate random vector @input_vector.
-    input_vector = GenerateRandomVector(input_size);
-  }else if(input_type == "sorted_small_to_large" && comparison_type == "less"){
-    // Generate sorted vector @input_vector.
-    input_vector = GenerateSortedVector(input_size, true);
-    TestTiming(input_vector, less<int>{});
-  }else if(input_type == "sorted_large_to_small" && comparison_type == "greater"){
-    input_vector = GenerateSortedVector(input_size, false);
-    TestTiming(input_vector, greater<int>{});
-  }else{
-    cout << "invalid" << endl;
-  }
+  // cout << "Running sorting algorithms: " << input_type << " " << input_size << " numbers " << comparison_type << endl;
+  // vector<int> input_vector;
+  // if(input_type == "random") {
+  //   // Generate random vector @input_vector.
+  //   input_vector = GenerateRandomVector(input_size);
+  // }else if(input_type == "sorted_small_to_large" && comparison_type == "less"){
+  //   // Generate sorted vector @input_vector.
+  //   input_vector = GenerateSortedVector(input_size, true);
+  //   TestTiming(input_vector, less<int>{});
+  // }else if(input_type == "sorted_large_to_small" && comparison_type == "greater"){
+  //   input_vector = GenerateSortedVector(input_size, false);
+  //   TestTiming(input_vector, greater<int>{});
+  // }else{
+  //   cout << "invalid" << endl;
+  // }
 
   // Call HeapSort / MergeSort / QuickSort  using appropriate input.
   // ...
