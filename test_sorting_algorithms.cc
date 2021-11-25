@@ -23,6 +23,22 @@ long long ComputeDuration(chrono::high_resolution_clock::time_point start_time,
   return chrono::duration_cast<chrono::nanoseconds>(end_time - start_time).count();
 }
 
+// Verifies that a vector is sorted given a comparator.
+// I.e. it applies less_than() for consecutive pair of elements and returns true
+// iff less_than() is true for all pairs.
+template <typename Comparable, typename Comparator>
+bool VerifyOrder(const vector<Comparable> &input, Comparator less_than) {
+  // Add code
+  for(unsigned i = 0; i < input.size(); i++){
+    if(!less_than(input[i], input[i+1])){
+      //do nothing
+    }else{
+      return false;
+    }
+  }
+  return true;
+}
+
 // Test function that shows how you can time a piece of code.
 // Just times a simple loop. Remove for final submission.
 
@@ -36,6 +52,75 @@ void TestTiming() {
   const auto end_time = chrono::high_resolution_clock::now();    
   cout << ComputeDuration(begin_time, end_time) << "ns" << endl;
 
+}
+
+template<typename Comparable, typename Comparator>
+void TestTiming(vector<Comparable>& a, Comparator less_than){
+  const auto heapStart = chrono::high_resolution_clock::now();
+  // Time this piece of code.
+  HeapSort(a, less_than);
+  // End of piece of code to time.
+  const auto heapEnd = chrono::high_resolution_clock::now();   
+  cout << "HeapSort" << endl;
+  cout << "Runtime: ";
+  cout << ComputeDuration(heapStart, heapEnd) << "ns" << endl;
+  cout << "Verified: " << VerifyOrder(a, less_than) << endl;
+  cout << endl;
+
+  const auto mergeStart = chrono::high_resolution_clock::now();
+  // Time this piece of code.
+  MergeSort(a, less_than);
+  // End of piece of code to time.
+  const auto mergeEnd = chrono::high_resolution_clock::now();   
+  cout << "MergeSort" << endl;
+  cout << "Runtime: ";
+  cout << ComputeDuration(mergeStart, mergeEnd) << "ns" << endl;
+  cout << "Verified: " << VerifyOrder(a, less_than) << endl;
+  cout << endl;
+
+  const auto quickStart = chrono::high_resolution_clock::now();
+  // Time this piece of code.
+  quicksort(a, less_than);
+  // End of piece of code to time.
+  const auto quickEnd = chrono::high_resolution_clock::now();   
+  cout << "QuickSort" << endl;
+  cout << "Runtime: ";
+  cout << ComputeDuration(quickStart, quickEnd) << "ns" << endl;
+  cout << "Verified: " << VerifyOrder(a, less_than) << endl;
+  cout << endl;
+
+  const auto med3Start = chrono::high_resolution_clock::now();
+  // Time this piece of code.
+  QuickSort(a, less_than);
+  // End of piece of code to time.
+  const auto med3End = chrono::high_resolution_clock::now();   
+  cout << "Median of Three" << endl;
+  cout << "Runtime: ";
+  cout << ComputeDuration(med3Start, med3End) << "ns" << endl;
+  cout << "Verified: " << VerifyOrder(a, less_than) << endl;
+  cout << endl;
+
+  const auto middleStart = chrono::high_resolution_clock::now();
+  // Time this piece of code.
+  QuickSort2(a, less_than);
+  // End of piece of code to time.
+  const auto middleEnd = chrono::high_resolution_clock::now();   
+  cout << "Middle" << endl;
+  cout << "Runtime: ";
+  cout << ComputeDuration(middleStart, middleEnd) << "ns" << endl;
+  cout << "Verified: " << VerifyOrder(a, less_than) << endl;
+  cout << endl;
+
+  const auto firstStart = chrono::high_resolution_clock::now();
+  // Time this piece of code.
+  QuickSort3(a, less_than);
+  // End of piece of code to time.
+  const auto firstEnd = chrono::high_resolution_clock::now();   
+  cout << "First" << endl;
+  cout << "Runtime: ";
+  cout << ComputeDuration(firstStart, firstEnd) << "ns" << endl;
+  cout << "Verified: " << VerifyOrder(a, less_than) << endl;
+  cout << endl;
 }
 
 // Generates and returns random vector of size @size_of_vector.
@@ -73,22 +158,6 @@ vector<int> GenerateSortedVector(size_t size_of_vector, bool smaller_to_larger) 
   return vec;
 }
 
-// Verifies that a vector is sorted given a comparator.
-// I.e. it applies less_than() for consecutive pair of elements and returns true
-// iff less_than() is true for all pairs.
-template <typename Comparable, typename Comparator>
-bool VerifyOrder(const vector<Comparable> &input, Comparator less_than) {
-  // Add code
-  for(unsigned i = 0; i < input.size(); i++){
-    if(!less_than(input[i], input[i+1])){
-      //do nothing
-    }else{
-      return false;
-    }
-  }
-  return true;
-}
-
 // Wrapper function to test different sorting algorithms. See homework's PDF for details.
 void testSortingWrapper(int argc, char **argv) {
   const string input_type = string(argv[1]);
@@ -118,22 +187,12 @@ void testSortingWrapper(int argc, char **argv) {
   }else if(input_type == "sorted_small_to_large" && comparison_type == "less"){
     // Generate sorted vector @input_vector.
     input_vector = GenerateSortedVector(input_size, true);
-    MergeSort(input_vector, less<int>{});
-    HeapSort(input_vector, less<int>{});
-    quicksort(input_vector, less<int>{});
-    QuickSort(input_vector, less<int>{});
-    QuickSort2(input_vector, less<int>{});
-    QuickSort3(input_vector, less<int>{});
+    TestTiming(input_vector, less<int>{});
   }else if(input_type == "sorted_large_to_small" && comparison_type == "greater"){
     input_vector = GenerateSortedVector(input_size, false);
-    MergeSort(input_vector, greater<int>{});
-    HeapSort(input_vector, greater<int>{});
-    quicksort(input_vector, greater<int>{});
-    QuickSort(input_vector, greater<int>{});
-    QuickSort2(input_vector, greater<int>{});
-    QuickSort3(input_vector, greater<int>{});
+    TestTiming(input_vector, greater<int>{});
   }else{
-    cout << "invalid input_type or comparison_type" << endl;
+    cout << "invalid" << endl;
   }
 
   // Call HeapSort / MergeSort / QuickSort  using appropriate input.

@@ -52,7 +52,19 @@ void insertionSort( vector<Comparable> & a, int left, int right )
   }
 }
 
+template <typename Comparable, typename Comparator>
+void insertionSort( vector<Comparable> & a, int left, int right, Comparator less_than )
+{
+  for( int p = left + 1; p <= right; ++p )
+  {
+    Comparable tmp = std::move( a[ p ] );
+    int j;
 
+    for( j = p; j > left && less_than(tmp, a[ j - 1 ]); --j )
+      a[ j ] = std::move( a[ j - 1 ] );
+    a[ j ] = std::move( tmp );
+  }
+}
 
 /**
  * Shellsort, using Shell's (poor) increments.
@@ -258,11 +270,11 @@ const Comparable & median3( vector<Comparable> & a, int left, int right, Compara
 {
   int center = ( left + right ) / 2;
   
-  if(less_than( a[ center ] < a[ left ]))
+  if(less_than( a[ center ], a[ left ]))
     std::swap( a[ left ], a[ center ] );
-  if(less_than( a[ right ] < a[ left ] ))
+  if(less_than( a[ right ], a[ left ] ))
     std::swap( a[ left ], a[ right ] );
-  if(less_than( a[ right ] < a[ center ] ))
+  if(less_than( a[ right ], a[ center ] ))
     std::swap( a[ center ], a[ right ] );
 
   // Place pivot at position right - 1
@@ -275,26 +287,22 @@ void middlePivot(vector<Comparable> & a, int left, int right, Comparator less_th
   if(left + 10 <= right){
     int mid = (left + right) / 2;
     swap(a[mid], a[right-1]);
-    Comparable pivot = a[right-1];
+    const Comparable & pivot = a[right-1];
 
-    int left_index = left;
-    int right_index = right-1;
-    while(true){
-      while(less_than(a[left_index], pivot)){
-        left_index++;
-      }
-      while(less_than(pivot, a[right_index])){
-        right_index++;
-      }
-      if(left_index < right_index){
-        swap(a[left_index], a[right_index]);
+    int i = left;
+    int j = right-1;
+    for(;;){
+      while(less_than(a[++i], pivot)){}
+      while(less_than(pivot, a[--j])){}
+      if(i < j){
+        swap(a[i], a[j]);
       }else{
         break;
       }
     }
-    swap(a[left_index], a[right-1]);
-    middlePivot(a, left, left_index-1, less_than);
-    middlePivot(a, left_index+1, right, less_than);
+    swap(a[i], a[right-1]);
+    middlePivot(a, left, i-1, less_than);
+    middlePivot(a, i+1, right, less_than);
   }else{
     insertionSort(a, left, right, less_than);
   }
@@ -305,26 +313,22 @@ void first(vector<Comparable> & a, int left, int right, Comparator less_than){
   if(left + 10 < right){
     int start = left;
     swap(a[start], a[right-1]);
-    Comparable pivot = a[right-1];
+    const Comparable & pivot = a[right-1];
 
-    int left_index = left;
-    int right_index = right-1;
-    while(true){
-      while(less_than(a[left_index], pivot)){
-        left_index++;
-      }
-      while(less_than(pivot, a[right_index])){
-        right_index++;
-      }
-      if(left_index < right_index){
-        swap(a[left_index], a[right_index]);
+    int i = left;
+    int j = right-1;
+    for(;;){
+      while(less_than(a[++i], pivot)){}
+      while(less_than(pivot, a[--j])){}
+      if(i < j){
+        swap(a[i], a[j]);
       }else{
         break;
       }
     }
-    swap(a[left_index], a[right-1]);
-    first(a, left, left_index-1, less_than);
-    first(a, left_index+1, right, less_than);
+    swap(a[i], a[right-1]);
+    first(a, left, i-1, less_than);
+    first(a, i+1, right, less_than);
   }else{
     insertionSort(a, left, right, less_than);
   }
@@ -365,6 +369,35 @@ void quicksort( vector<Comparable> & a, int left, int right )
     insertionSort( a, left, right );
 }
 
+
+template <typename Comparable, typename Comparator>
+void quicksort( vector<Comparable> & a, int left, int right, Comparator less_than )
+{
+  if( left + 10 <= right )
+  {
+    const Comparable & pivot = median3( a, left, right, less_than);
+
+    // Begin partitioning
+    int i = left, j = right - 1;
+    for( ; ; )
+    {
+      while(less_than(a[ ++i ], pivot)) { }
+      while(less_than(pivot, a[ --j ])) { }
+      if( i < j )
+        std::swap( a[ i ], a[ j ] );
+      else
+        break;
+    }
+
+    std::swap( a[ i ], a[ right - 1 ] );  // Restore pivot
+
+    quicksort( a, left, i - 1 );     // Sort small elements
+    quicksort( a, i + 1, right );    // Sort large elements
+  }
+  else  // Do an insertion sort on the subarray
+    insertionSort( a, left, right );
+}
+
 /**
  * Quicksort algorithm (driver).
  */
@@ -374,6 +407,11 @@ void quicksort( vector<Comparable> & a )
   quicksort( a, 0, a.size( ) - 1 );
 }
 
+template <typename Comparable, typename Comparator>
+void quicksort( vector<Comparable> & a, Comparator less_than)
+{
+  quicksort( a, 0, a.size( ) - 1, less_than );
+}
 
 /**
  * Internal selection method that makes recursive calls.
