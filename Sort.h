@@ -399,7 +399,7 @@ void quicksort( vector<Comparable> & a, int left, int right, Comparator less_tha
     quicksort( a, i + 1, right, less_than );    // Sort large elements
   }
   else  // Do an insertion sort on the subarray
-    insertionSort( a, left, rightm less_than );
+    insertionSort( a, left, right, less_than );
 }
 
 /**
