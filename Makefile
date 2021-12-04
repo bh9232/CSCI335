@@ -33,21 +33,28 @@ LIBS_ALL =  -L/usr/lib -L/usr/local/lib $(MATH_LIBS)
 
 
 #ZEROTH PROGRAM
-ALL_OBJ0=test_sorting_algorithms.o
-PROGRAM_0=test_sorting_algorithms
+ALL_OBJ0=CreateGraphAndTest.o
+PROGRAM_0=CreateGraphAndTest
 $(PROGRAM_0): $(ALL_OBJ0)
 	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ0) $(INCLUDES) $(LIBS_ALL)
+
+ALL_OBJ1=FindPaths.o
+PROGRAM_1=FindPaths
+$(PROGRAM_1): $(ALL_OBJ1)
+	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ1) $(INCLUDES) $(LIBS_ALL)
+
 
 #Compiling all
 
 all: 	
-	make $(PROGRAM_0)
+		make $(PROGRAM_0)
+		make $(PROGRAM_1)
 
 
 #Clean obj files
 
 clean:
-	(rm -f *.o; rm -f $(PROGRAM_0))
+	(rm -f *.o; rm -f $(PROGRAM_0); rm -f $(PROGRAM_1))
 
 
 
