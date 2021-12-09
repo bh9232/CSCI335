@@ -55,7 +55,7 @@ all:
 
 clean:
 	(rm -f *.o; rm -f $(PROGRAM_0); rm -f $(PROGRAM_1))
-
+	clear
 
 
 (:
