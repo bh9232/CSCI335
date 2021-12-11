@@ -22,6 +22,7 @@ class Graph{
 public:
   Graph() {};
 
+  //constructor
   Graph(int num_vectors){
     num_vertices_ = num_vectors;
     vertex_list_.resize(num_vectors);
@@ -37,6 +38,7 @@ public:
 
   ~Graph() {};
 
+  //adding adjacent vertices
   void addEdge(int vertex1, int vertex2, double weight){
     Vertex::Adjacency x;
     x.adjacent_number_ = vertex2;
@@ -91,15 +93,12 @@ public:
         }
       }
     }
-    // for (int i=0; i < vertex_list_.size(); i++){
-    //   Vertex* v = vertex_list_[i];
-    //   cout << v->printVertex() << endl;
-    // }
     printPath(pos);
   }
 
+  //print the pathing(interation: vertex numbers/path cost: distance/not_possible)
   void printPath(int pos){
-		vector<int> path;
+		vector<int> path;//vector of vertex numbers in the path in from current -> start/previous
 		for(int i = 0; i < vertex_list_.size(); i++){
 			cout << i+1 << ": ";
 			Vertex* v = vertex_list_[i];
@@ -113,7 +112,7 @@ public:
           v = v->path_;
         }
         
-        reverse(path.begin(),path.end());
+        reverse(path.begin(),path.end());//path start/previous -> current
         for(int i= 0; i<path.size();i++){
           cout << path[i] << " ";
         }
@@ -136,9 +135,12 @@ private:
 
       //default Adjacency() constructor
       Adjacency() : adjacent_number_ {}, weight_ {} {};
+
+      //debugging method
       string printAdjacency(){
         return "\tadjacent_number: " + to_string(adjacent_number_) + "\n\tweight: " + to_string(weight_); 
       }
+      //end of debugging method
     };
     //end of struct Adjacency
 
@@ -151,6 +153,7 @@ private:
     //default Vertex() constructor
     Vertex() : adj_ {}, vertex_number_ {}, known_ {}, distance_ {numeric_limits<double>::max()}, path_{nullptr} {};
 
+    //debugging methods
     string printVertexNumber(){
       return to_string(vertex_number_);
     }
@@ -174,7 +177,8 @@ private:
       }
       return result;
     }
-  };
+    //end of debugging methods
+  };//end of Vertex struct
 
   int num_vertices_;
   vector<Vertex*> vertex_list_;

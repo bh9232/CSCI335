@@ -47,6 +47,7 @@ $(PROGRAM_1): $(ALL_OBJ1)
 #Compiling all
 
 all: 	
+		clear
 		make $(PROGRAM_0)
 		make $(PROGRAM_1)
 

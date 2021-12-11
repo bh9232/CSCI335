@@ -15,6 +15,7 @@ int graphTestDriver(int argc, char **argv) {
   //Begin your code here. Feel free to add any helper functions or classes you need,
   //as long as we only have to call this function to run the specified assignment.
 
+  //importing files
   string graph_filename = argv[1];
   string adjacency_queryfilename = argv[2];
   ifstream input_file(graph_filename);
@@ -24,11 +25,13 @@ int graphTestDriver(int argc, char **argv) {
   input_file >> num_of_vertices;
   Graph graph1(num_of_vertices);
 
+  //reading Graph#.txt
   while(getline(input_file, line)){
     int vertex = 0;
     int connected_vertex = 0;
     double edge_weight = 0;
 
+    //sstream needed to get chuncks of data
     stringstream object_stream(line);
     object_stream >> vertex;
     
@@ -43,6 +46,7 @@ int graphTestDriver(int argc, char **argv) {
     }
   }
 
+  //reading AdjacenyQuery files
   int vertex1 = 0;
   int vertex2 = 0;
   ifstream adj_file(adjacency_queryfilename);
