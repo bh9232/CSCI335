@@ -91,14 +91,14 @@ public:
         }
       }
     }
-    for (int i=0; i < vertex_list_.size(); i++){
-      Vertex* v = vertex_list_[i];
-      cout << v->printVertex() << endl;
-    }
-    printPath();
+    // for (int i=0; i < vertex_list_.size(); i++){
+    //   Vertex* v = vertex_list_[i];
+    //   cout << v->printVertex() << endl;
+    // }
+    printPath(pos);
   }
 
-  void printPath(){
+  void printPath(int pos){
 		vector<int> path;
 		for(int i = 0; i < vertex_list_.size(); i++){
 			cout << i+1 << ": ";
@@ -120,7 +120,7 @@ public:
         path.clear();
 
         cout << "cost: " << fixed << setprecision(1) << cost << endl;
-      }else if(i+1 == v->vertex_number_){
+      }else if(i+1 == pos){
         cout << i+1 << " cost: 0.0" << endl;
       }else{
         cout << "not_possible" << endl;

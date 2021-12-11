@@ -5,6 +5,5 @@ Q1: Adjacency
 - functional
 
 Q2: Dijkstra's Algorithm Implementation
-- started
 - created dijkstra(int pos) and findPath(Vertex* v)
-- not printing correct path
+- functional
