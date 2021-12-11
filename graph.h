@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <limits>
+#include <iomanip>
 #include <vector>
 #include <algorithm>
 #include "binary_heap.h"
@@ -70,6 +71,7 @@ public:
   void Dijkstra(int pos){
     BinaryHeap<Vertex*> priority_queue;
     priority_queue.insert(vertex_list_[pos-1]);
+    vertex_list_[pos-1]->distance_ = 0;
 
     while(!priority_queue.isEmpty()){
       Vertex* v = priority_queue.findMin();
@@ -89,47 +91,40 @@ public:
         }
       }
     }
-
-    printPath(pos);
-
-    // for(unsigned int i = 0; i < vertex_list_.size(); i++){
-    //   cout << vertex_list_[i]->vertex_number_ << ": ";
-    //   double cost = vertex_list_[i]->distance_;
-    //   findPath(vertex_list_[i]);
-      
-      
-    //   if(cost != numeric_limits<int>::max()){
-    //     cout.precision(1);
-    //     cout << fixed;
-    //     cout << " cost: " << cost << endl;
-    //   }else{
-    //     cout << "not_possible" << endl;
-    //   }
-    // }
+    for (int i=0; i < vertex_list_.size(); i++){
+      Vertex* v = vertex_list_[i];
+      cout << v->printVertex() << endl;
+    }
+    printPath();
   }
 
-  void printPath(int pos){
+  void printPath(){
 		vector<int> path;
 		for(int i = 0; i < vertex_list_.size(); i++){
 			cout << i+1 << ": ";
 			Vertex* v = vertex_list_[i];
-			int cost = v->distance_;
-			while(v != nullptr){
-				if(v->vertex_number_ == 0){
-					v->vertex_number_ = i+1;
+      if(v->path_ != nullptr){
+        double cost = v->distance_;
+        while(v != nullptr){
+          if(v->vertex_number_ == 0){
+            v->vertex_number_ = i+1;
+          }
+          path.push_back(v->vertex_number_);
+          v = v->path_;
         }
-				path.push_back(v->vertex_number_);
-				v = v->path_;
-			}
-			
-			reverse(path.begin(),path.end());
-			for(int i= 0; i<path.size();i++){
-				cout << path[i] << " ";
-			}
-			path.clear();
+        
+        reverse(path.begin(),path.end());
+        for(int i= 0; i<path.size();i++){
+          cout << path[i] << " ";
+        }
+        path.clear();
 
-			cout << "cost: " << cost << endl;
-      // cout << v->printVertex() << endl;
+        cout << "cost: " << fixed << setprecision(1) << cost << endl;
+      }else if(i+1 == v->vertex_number_){
+        cout << i+1 << " cost: 0.0" << endl;
+      }else{
+        cout << "not_possible" << endl;
+      }
 		}
 	}
 
@@ -150,11 +145,15 @@ private:
     vector<Adjacency> adj_;
     int vertex_number_;
     bool known_;
-    int distance_;
+    double distance_;
     Vertex* path_;
 
     //default Vertex() constructor
-    Vertex() : adj_ {}, vertex_number_ {}, known_ {}, distance_ {}, path_{nullptr} {};
+    Vertex() : adj_ {}, vertex_number_ {}, known_ {}, distance_ {numeric_limits<double>::max()}, path_{nullptr} {};
+
+    string printVertexNumber(){
+      return to_string(vertex_number_);
+    }
 
     string printVertex(){
       string result = "vertex_number " + to_string(vertex_number_) + "\n";
@@ -162,22 +161,20 @@ private:
         result += adj_[i].printAdjacency() + "\n";
       }
       if (known_ ) {
-        result += "known true\n";
+        result += "\tknown true\n";
       } else {
-        result += "known false\n";
+        result += "\tknown false\n";
       }
-      result += "distance: " + distance_;
+      result += "\tdistance: " + to_string(distance_);
+      result += "\n";
+      if (path_ != nullptr){
+        result += "\tpath is " + path_->printVertexNumber();
+      } else {
+        result += "\tpath is nonexistance";
+      }
       return result;
     }
   };
-  
-  void findPath(Vertex* v){
-    // if(v->path_ != nullptr){
-    //   findPath(v->path_);
-    //   cout << v->vertex_number_ << " ";
-    // }
-    v->printVertex();
-  }
 
   int num_vertices_;
   vector<Vertex*> vertex_list_;
