@@ -1,8 +1,10 @@
 Brian Hong
 
 Q1: Adjacency
-- started
 - created "Class Graph" with "struct Vertex" and "struct Adjacency"
-- working
+- functional
+
 Q2: Dijkstra's Algorithm Implementation
-- not started
+- started
+- created dijkstra(int pos) and findPath(Vertex* v)
+- not printing correct path
